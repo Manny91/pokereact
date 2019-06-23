@@ -1,22 +1,19 @@
-export abstract class ClientHttp {
-  // eslint-disable-next-line
-  constructor(private base: string, private tokenFinder?: TokenFinder) {}
+const BASE_URL = "https://pokeapi.co/api/v2/";
 
-  protected async get(endpoint: string) {
-    const res = await fetch(`${this.base}${endpoint}`, {
-      headers: this.getRequestHeaders()
-    });
+async function get(endpoint: string) {
+  const res = await fetch(`${BASE_URL}${endpoint}`, {
+    headers: getRequestHeaders()
+  });
 
-    await checkHTTPError(res);
-    return res;
-  }
+  await checkHTTPError(res);
+  return res;
+}
 
-  getRequestHeaders() {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
+function getRequestHeaders() {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
 
-    return headers;
-  }
+  return headers;
 }
 
 async function checkHTTPError(res: Response) {
@@ -40,8 +37,6 @@ export class NetworkError {
   }
 }
 
-export interface TokenFinder {
-  getTokens: () => { token: string; refreshToken: string };
-  updateTokens: (token: string, refreshToken: string) => void;
-  refreshEndpoint: string;
-}
+export default {
+  get
+};

@@ -1,15 +1,16 @@
 import React from "react";
 import styled, { ThemeProvider } from "../styled.components";
-
+import { Provider } from "react-redux";
+import { Route, Switch } from "react-router";
+import { configureStore } from "../store";
+import { theme } from "../theme";
 function App() {
   return (
-    <Provider store={store(history)}>
+    <Provider store={configureStore()}>
       <ThemeProvider theme={theme}>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route exact path="/" component={Pokedex} />
-          </Switch>
-        </ConnectedRouter>
+        <Switch>
+          <Route exact path="/" component={Pokemons} />
+        </Switch>
       </ThemeProvider>
     </Provider>
   );
