@@ -3,10 +3,10 @@ import { combineReducers } from "redux";
 import { Pokemon } from "../pokemon/services/pokemon-service";
 import { reducer as pokemonReducer } from "../pokemon/store/pokemon.store";
 
-interface PokedexState {
-  pokemons: PokemonState;
+export interface PokedexState {
+  pokemonState: PokemonState;
 }
 
 export const reducers = combineReducers<PokedexState>({
-  pokemons: pokemonReducer
+  pokemonState: pokemonReducer
 });

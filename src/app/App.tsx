@@ -1,16 +1,19 @@
 import React from "react";
 import styled, { ThemeProvider } from "../styled.components";
 import { Provider } from "react-redux";
-import { Route, Switch } from "react-router";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { configureStore } from "../store";
 import { theme } from "../theme";
+import PokemonsContainer from "../app/pokemon/pokemon.container";
 function App() {
   return (
     <Provider store={configureStore()}>
       <ThemeProvider theme={theme}>
-        <Switch>
-          <Route exact path="/" component={Pokemons} />
-        </Switch>
+        <BrowserRouter>
+          <Switch>
+            <Route exact component={PokemonsContainer} />
+          </Switch>
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   );

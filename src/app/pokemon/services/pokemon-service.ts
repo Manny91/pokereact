@@ -15,6 +15,7 @@ export interface Pokemon {
   sprites: PokemonSprite;
   weight: number;
   height: number;
+  url: string;
 }
 
 export interface PokemonResponse {
@@ -24,12 +25,12 @@ export interface PokemonResponse {
 }
 
 async function getPokemon(pokemonNo: number): Promise<Pokemon> {
-  const res = await httpClient.get(`/pokemon/${pokemonNo}`);
+  const res = await httpClient.get(`pokemon/${pokemonNo}`);
   return res.json();
 }
 
 async function getPokemons(): Promise<PokemonResponse> {
-  const res = await httpClient.get(`/pokemon`);
+  const res = await httpClient.get(`pokemon`);
   return res.json();
 }
 
