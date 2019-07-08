@@ -1,6 +1,6 @@
 import httpClient from "../../../services/http-client";
 
-interface PokemonSprite {
+export interface PokemonSprite {
   back_default?: string;
   front_default?: string;
   back_shiny?: string;

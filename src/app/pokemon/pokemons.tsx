@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { PokemonsProps } from "./pokemon.container";
-import { PokemonCard } from "./pokemon.card";
+import { PokemonCard } from "./pokemon-card";
 
 export const PokemonsComponent = ({
   pokemons,

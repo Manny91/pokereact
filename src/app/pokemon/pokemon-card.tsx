@@ -1,6 +1,7 @@
 import { Pokemon } from "./services/pokemon-service";
 import React, { useEffect } from "react";
 import styled from "../../styled.components";
+import { PokemonSpriteDisplayer } from "./sprite-displayer/pokemon-sprite";
 
 interface PokemonCardProps {
   key: number;
@@ -15,7 +16,7 @@ export const PokemonCard = ({
 }: PokemonCardProps) => {
   return (
     <Card>
-      {sprites && <img src={sprites.front_default} />}
+      {sprites && <PokemonSpriteDisplayer sprites={sprites} />}
       <div>{name}</div>
     </Card>
   );
