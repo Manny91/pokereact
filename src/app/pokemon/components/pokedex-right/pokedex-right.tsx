@@ -47,7 +47,7 @@ const PokedexRightPage = styled.div`
 `;
 
 const Panel = styled.div`
-  height: 450px;
+  height: 500px;
   width: 540px;
   background-color: #e61515;
   border-bottom-left-radius: 15px;

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactNode } from "react";
 import { PokemonsProps } from "./pokemons.container";
 import { PokemonDisplayer } from "./pokemon-displayer";
 import styled from "../../styled.components";
 import PokedexLeft from "./components/pokedex-left/pokedex-left";
 import PokedexRight from "./components/pokedex-right/pokedex-right";
+import { Pokemon } from "./services/pokemon-service";
 
 export interface PokedexPage {
   pageOpen: boolean;
@@ -29,8 +30,10 @@ export const PokedexComponent = ({
     return <h1>error...</h1>;
   }
   return (
-    <PokedexContainer onClick={() => openPokedex(!opened)}>
-      <PokedexLeft />
+    <PokedexContainer>
+      <PokedexLeft handleClick={() => openPokedex(!opened)}>
+        {opened && <PokemonDisp pokemons={pokemons} />}
+      </PokedexLeft>
       <PageDivider pageOpen={opened} />
       <PokedexRight pageOpen={opened} />
     </PokedexContainer>
@@ -55,7 +58,7 @@ const PageHinge = styled.div`
   width: 100%;
 `;
 const PageDividerWrapper = styled.div`
-  margin-top: 150px;
+  margin-top: 112px;
   border-top: 3px solid;
   border-left: 3px solid;
   margin-bottom: 10px;
@@ -127,5 +130,19 @@ function PageDivider({ pageOpen }: PokedexPage) {
       <PageHinge />
       <PageGap />
     </PageDividerWrapper>
+  );
+}
+const PokemonPageDisplayer = styled.div`
+  padding: 30px;
+`;
+type pokemonDispState = {
+  pokemons: Pokemon[];
+};
+function PokemonDisp({ pokemons }: pokemonDispState) {
+  const firstPokemon = pokemons[0];
+  return (
+    <PokemonPageDisplayer>
+      <PokemonDisplayer key={firstPokemon.id} pokemon={firstPokemon} />;
+    </PokemonPageDisplayer>
   );
 }

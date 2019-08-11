@@ -4,10 +4,11 @@ import styled from "../../../../styled.components";
 type Orientation = "LEFT" | "RIGHT";
 interface State {
   orientation: Orientation;
+  handleClick?: () => void;
 }
-function PokedexTopSeparator({ orientation }: State) {
+function PokedexTopSeparator({ orientation, handleClick }: State) {
   return (
-    <SeparatorWrapper>
+    <SeparatorWrapper onClick={handleClick}>
       <TopSeparator orientation={orientation} />
       <BottomSeparator className={orientation === "RIGHT" ? "right" : "left"} />
     </SeparatorWrapper>
@@ -32,6 +33,7 @@ function Left({ orientation }: State) {
 const SeparatorWrapper = styled.div`
   height: 80px;
   overflow: hidden;
+  cursor: pointer;
 `;
 const Container = styled.div`
   width: 100%;

@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-function PokedexCircles() {
+type State = {
+  handleClick?: () => void;
+};
+function PokedexCircles({ handleClick }: State) {
   return (
-    <PokedexCirclesContainer>
+    <PokedexCirclesContainer onClick={handleClick}>
       <PokedexCircle />
       <PokedexCircleSmallRed />
       <PokedexCircleSmallYellow />
@@ -42,7 +45,8 @@ function PokedexCircleSmallGreen() {
 
 const PokedexCirclesContainer = styled.div`
   display: flex;
-  height: 140px;
+  height: 95px;
+  cursor: pointer;
 `;
 const PokedexCircleStyled = styled.div`
   width: 100px;

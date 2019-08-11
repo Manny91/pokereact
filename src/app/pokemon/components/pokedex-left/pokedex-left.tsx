@@ -1,14 +1,18 @@
 import styled from "../../../../styled.components";
-import React from "react";
+import React, { ReactChild, ReactNode } from "react";
 import PokedexCircles from "./pokedex-circles/pokedex-circles";
 import PokedexTopSeparator from "../pokedex-top-separator/pokedex-top-separator";
 
-function PokedexLeft() {
+type State = {
+  children: ReactNode;
+  handleClick: () => void;
+};
+function PokedexLeft({ children, handleClick }: State) {
   return (
     <PokedexLeftContainer>
-      <PokedexCircles />
-      <PokedexTopSeparator orientation="LEFT" />
-      <Panel />
+      <PokedexCircles handleClick={handleClick} />
+      <PokedexTopSeparator orientation="LEFT" handleClick={handleClick} />
+      <Panel>{children}</Panel>
     </PokedexLeftContainer>
   );
 }
@@ -21,7 +25,7 @@ const PokedexLeftContainer = styled.div`
 `;
 
 const Panel = styled.div`
-  height: 450px;
+  height: 500px;
   width: 540px;
   background-color: #e61515;
   border-bottom-left-radius: 15px;

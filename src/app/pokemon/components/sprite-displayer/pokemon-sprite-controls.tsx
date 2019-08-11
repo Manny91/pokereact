@@ -57,4 +57,5 @@ const Button = styled.button`
   &.active {
     border-color: #d4b310;
   }
+  cursor: pointer;
 `;
