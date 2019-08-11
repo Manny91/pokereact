@@ -12,8 +12,8 @@ import {
   performGetPokemonAction
 } from "./store/pokemon.actions";
 import { PokedexState } from "../store/reducers";
-import { PokemonsComponent } from "./pokemons";
 import { Pokemon } from "./services/pokemon-service";
+import { PokemonsComponent } from "./pokemons";
 
 interface DispatchProps {
   getPokemons(): void;

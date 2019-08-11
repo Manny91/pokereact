@@ -1,7 +1,8 @@
 export const theme = {
   colors: {
     red: "red",
-    white: "white"
+    white: "white",
+    lightGreen: "green"
   },
   media: {
     sm: `(min-width: 568px)`,
