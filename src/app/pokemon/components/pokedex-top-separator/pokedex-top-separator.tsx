@@ -30,7 +30,7 @@ function Left({ orientation }: State) {
   );
 }
 const SeparatorWrapper = styled.div`
-  height: 150px;
+  height: 80px;
   overflow: hidden;
 `;
 const Container = styled.div`
@@ -44,7 +44,7 @@ const LeftWrapper = styled.div`
 `;
 const LeftInner = styled.div`
   height: 100%;
-  width: 190px;
+  width: 272px;
   border-bottom: 10px double black;
   position: relative;
   bottom: 10px;
@@ -61,9 +61,9 @@ const LeftInner = styled.div`
   &.right {
     background-color: #e61515;
     height: 0px;
-    margin-top: 150px;
+    margin-top: 80px;
     border-top: 10px double;
-    width: 180px;
+    width: 262px;
     border-left: 10px double;
     z-index: 1;
     &:after {
@@ -106,9 +106,7 @@ const Right = styled.div`
 const BottomSeparator = styled.div`
   height: 110px;
   width: 100%;
-  margin-top: 100px;
   border-top: 10px double black;
-  margin-top: -70px;
   transform: rotate(320deg);
   position: relative;
   &:after {
