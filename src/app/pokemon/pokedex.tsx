@@ -142,7 +142,7 @@ function PokemonDisp({ pokemons }: pokemonDispState) {
   const firstPokemon = pokemons[0];
   return (
     <PokemonPageDisplayer>
-      <PokemonDisplayer key={firstPokemon.id} pokemon={firstPokemon} />;
+      <PokemonDisplayer key={firstPokemon.id} pokemon={firstPokemon} />
     </PokemonPageDisplayer>
   );
 }

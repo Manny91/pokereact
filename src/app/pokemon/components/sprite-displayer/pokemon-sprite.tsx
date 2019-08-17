@@ -5,9 +5,13 @@ import styled from "../../../../styled.components";
 
 interface PokemonSpriteProps {
   sprites: PokemonSprite;
+  name: string;
 }
 
-export const PokemonSpriteDisplayer = ({ sprites }: PokemonSpriteProps) => {
+export const PokemonSpriteDisplayer = ({
+  sprites,
+  name
+}: PokemonSpriteProps) => {
   const [selectedSprite, setSelectedSprite] = useState(sprites.front_default);
   const [gender, setGender] = useState("default");
   const [rotation, setRotation] = useState("front");
@@ -46,19 +50,18 @@ export const PokemonSpriteDisplayer = ({ sprites }: PokemonSpriteProps) => {
         <TopButtonsContainer />
         <Wrapper className={selectedSprite ? "on" : "off"}>
           <img src={selectedSprite} />
+          <PokemonName name={name} />
         </Wrapper>
         <BottomButtonsContainer />
       </Screen>
-      <ControlWrapper>
-        <PokemonSpriteControls
-          gender={gender}
-          rotation={rotation}
-          shiny={shiny}
-          handleChangeGender={handleChangeGender}
-          handleRotate={handleRotate}
-          handleShiny={handleShiny}
-        />
-      </ControlWrapper>
+      <PokemonSpriteControls
+        gender={gender}
+        rotation={rotation}
+        shiny={shiny}
+        handleChangeGender={handleChangeGender}
+        handleRotate={handleRotate}
+        handleShiny={handleShiny}
+      />
     </>
   );
 
@@ -70,9 +73,9 @@ export const PokemonSpriteDisplayer = ({ sprites }: PokemonSpriteProps) => {
     }
   }
 };
-
-const ControlWrapper = styled.div`
-  margin-top: 20px;
+const PokemonName = styled.h1<{ name: String }>`
+  margin-top: -55px;
+  font-size: 22px;
 `;
 const TopButtonsWrapper = styled.div`
   margin: auto;

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "../../../../styled.components";
+import { ButtonCross } from "../button-cross/button-cross";
 
 export interface PokemonSpriteControlsProps {
   handleRotate: () => void;
@@ -20,32 +21,30 @@ export const PokemonSpriteControls = ({
 }: PokemonSpriteControlsProps) => {
   return (
     <ControlBar>
-      <Button
-        onClick={() => handleChangeGender()}
-        className={gender === "female" ? "active" : ""}
-      >
-        <i className={`fa  ${gender === "default" ? "fa-mars" : "fa-venus"}`} />
-      </Button>
-      <Button onClick={() => handleShiny()} className={shiny ? "active" : ""}>
-        Shiny
-      </Button>
-      <Button
-        onClick={() => handleRotate()}
-        className={rotation === "back" ? "active" : ""}
-      >
-        <i
-          className={`fas  ${
-            rotation === "front" ? "fa-undo" : "fa-redo active"
-          }`}
+      <SpriteControlsWrapper>
+        <Button
+          onClick={() => handleRotate()}
+          className={rotation === "back" ? "active" : ""}
         />
-      </Button>
+        <GenderButton
+          onClick={() => handleChangeGender()}
+          className={gender === "female" ? "active" : ""}
+        />
+        <ShinyButton
+          onClick={() => handleShiny()}
+          className={shiny ? "active" : ""}
+        />
+      </SpriteControlsWrapper>
+      <ButtonCross />
     </ControlBar>
   );
 };
 
 const ControlBar = styled.section`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  width: 420px;
+  margin: 20px auto;
 `;
 
 const Button = styled.button`
@@ -55,7 +54,34 @@ const Button = styled.button`
   border: groove grey 3px;
   color: black;
   &.active {
-    border-color: #d4b310;
+    border: inset 3px #d4b310;
   }
   cursor: pointer;
+  background-color: #292929;
+  &:hover {
+    text-shadow: -1px -1px 0 #136a65;
+    -webkit-transition: all 250ms linear;
+    transition: all 100ms linear;
+  }
+`;
+
+const CylinderButton = styled(Button)`
+  height: 12px;
+  border-radius: 10px;
+`;
+const ShinyButton = styled(CylinderButton)`
+  border: groove #d4b310 3px;
+  background-color: #fbc531;
+`;
+const GenderButton = styled(CylinderButton)`
+  border: groove #8f88e2 3px;
+  background-color: #a29bfe;
+  &.active {
+    border: inset #8f88e2 3px;
+  }
+`;
+const SpriteControlsWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 200px;
 `;
