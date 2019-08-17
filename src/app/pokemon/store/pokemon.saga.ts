@@ -1,3 +1,4 @@
+import { PokemonSpeciesDetail } from "./../services/pokemon-service";
 import {
   PERFORM_GET_POKEMONS,
   PERFORM_GET_POKEMON,
@@ -38,7 +39,25 @@ function* requestPokemons() {
 }
 
 function* requestDetailsPokemon(action: GetPokemonAction) {
-  const pokemon = yield call(pokemonService.getPokemon, action.payload);
+  const pokemon: Pokemon = yield call(
+    pokemonService.getPokemon,
+    action.payload
+  );
+  const specieDetail: PokemonSpeciesDetail = yield call(
+    pokemonService.getSpecie,
+    action.payload
+  );
+  debugger;
+  const evolutionChainUrlArray = specieDetail.evolution_chain.url.split("/");
+  const evolutionChainId = +evolutionChainUrlArray[
+    evolutionChainUrlArray.length - 2
+  ];
+  const evolutionChain = yield call(
+    pokemonService.getEvolutionChain,
+    evolutionChainId
+  );
+  specieDetail.evolution_chain = evolutionChain;
+  pokemon.species = specieDetail;
   yield put(performGetPokemonSuccessAction(pokemon));
 }
 
