@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { PokemonsProps } from "./pokemons.container";
-import { PokemonDisplayer } from "./pokemon-displayer";
+import { PokedexPokemonDisplayer } from "./pokedex-pokemon-displayer";
 
 export const PokemonsComponent = ({
   pokemons,
@@ -24,7 +24,7 @@ export const PokemonsComponent = ({
       <h1>pokemons</h1>
 
       {pokemons.map((pokemon, index) => {
-        return <PokemonDisplayer key={index} pokemon={pokemon} />;
+        return <PokedexPokemonDisplayer key={index} pokemon={pokemon} />;
       })}
     </div>
   );

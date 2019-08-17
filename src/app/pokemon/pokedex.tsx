@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ReactNode } from "react";
 import { PokemonsProps } from "./pokemons.container";
-import { PokemonDisplayer } from "./pokemon-displayer";
+import { PokedexPokemonDisplayer } from "./pokedex-pokemon-displayer";
 import styled from "../../styled.components";
 import PokedexLeft from "./components/pokedex-left/pokedex-left";
 import PokedexRight from "./components/pokedex-right/pokedex-right";
@@ -142,7 +142,7 @@ function PokemonDisp({ pokemons }: pokemonDispState) {
   const firstPokemon = pokemons[0];
   return (
     <PokemonPageDisplayer>
-      <PokemonDisplayer key={firstPokemon.id} pokemon={firstPokemon} />
+      <PokedexPokemonDisplayer key={firstPokemon.id} pokemon={firstPokemon} />
     </PokemonPageDisplayer>
   );
 }

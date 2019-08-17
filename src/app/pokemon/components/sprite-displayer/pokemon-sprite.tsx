@@ -44,12 +44,16 @@ export const PokemonSpriteDisplayer = ({
     setShiny(!shiny);
   }
 
+  function showLoaderImage() {
+    console.log("loading...");
+  }
+
   return (
     <>
       <Screen>
         <TopButtonsContainer />
         <Wrapper className={selectedSprite ? "on" : "off"}>
-          <img src={selectedSprite} />
+          <img src={selectedSprite} onLoad={showLoaderImage} />
           <PokemonName name={name} />
         </Wrapper>
         <BottomButtonsContainer />
@@ -148,7 +152,7 @@ const Screen = styled.div`
 `;
 
 const Wrapper = styled.div`
-    margin: auto;
+  margin: auto;
   height: 180px;
   width: 200px;
   background: linear-gradient(
@@ -164,9 +168,9 @@ const Wrapper = styled.div`
   border-radius: 8px;
   img {
     width: 100%;
-    image-rendering: pixelated;x
+    image-rendering: pixelated;
   }
-  &.off{
-      background-color: black;
+  &.off {
+    background-color: black;
   }
 `;

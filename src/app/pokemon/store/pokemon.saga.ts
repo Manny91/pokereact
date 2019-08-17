@@ -1,4 +1,7 @@
-import { PokemonSpeciesDetail } from "./../services/pokemon-service";
+import {
+  PokemonSpeciesDetail,
+  FlavourText
+} from "./../services/pokemon-service";
 import {
   PERFORM_GET_POKEMONS,
   PERFORM_GET_POKEMON,
@@ -47,7 +50,6 @@ function* requestDetailsPokemon(action: GetPokemonAction) {
     pokemonService.getSpecie,
     action.payload
   );
-  debugger;
   const evolutionChainUrlArray = specieDetail.evolution_chain.url.split("/");
   const evolutionChainId = +evolutionChainUrlArray[
     evolutionChainUrlArray.length - 2
@@ -58,6 +60,7 @@ function* requestDetailsPokemon(action: GetPokemonAction) {
   );
   specieDetail.evolution_chain = evolutionChain;
   pokemon.species = specieDetail;
+  pokemon.description = getFlavorEngText(specieDetail);
   yield put(performGetPokemonSuccessAction(pokemon));
 }
 
@@ -67,4 +70,11 @@ function* getPokemonDetails(pokemonId: string) {
 
 function getPokemonIdFromUrl(pokemon: Pokemon) {
   return pokemon.url.split("pokemon/")[1].replace("/", "");
+}
+
+function getFlavorEngText(specieDetail: PokemonSpeciesDetail): string {
+  const flavorEntryEng = specieDetail.flavor_text_entries.find(flavour => {
+    return flavour.language.name === "en";
+  });
+  return flavorEntryEng ? flavorEntryEng.flavor_text : "";
 }

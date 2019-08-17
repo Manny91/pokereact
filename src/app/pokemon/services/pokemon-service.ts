@@ -11,7 +11,7 @@ export interface PokemonSprite {
 interface Language {
   name: string;
 }
-interface FlavourText {
+export interface FlavourText {
   flavor_text: string;
   language: Language;
 }
@@ -42,6 +42,7 @@ export interface Pokemon {
   weight: number;
   height: number;
   url: string;
+  description: string;
   species: PokemonSpeciesDetail;
 }
 

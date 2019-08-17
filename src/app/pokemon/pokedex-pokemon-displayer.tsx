@@ -3,16 +3,13 @@ import React, { useEffect } from "react";
 import styled from "../../styled.components";
 import { PokemonSpriteDisplayer } from "./components/sprite-displayer/pokemon-sprite";
 
-interface PokemonDisplayerProps {
+interface PokedexPokemonDisplayerProps {
   key: number;
   pokemon: Pokemon;
 }
-const Card = styled.div`
-  border: 1px solid black;
-  display: flex;
-  background-color: ${props => props.theme.colors.lightGreen};
-`;
-export const PokemonDisplayer = ({ pokemon }: PokemonDisplayerProps) => {
+export const PokedexPokemonDisplayer = ({
+  pokemon
+}: PokedexPokemonDisplayerProps) => {
   return (
     <>
       {pokemon.sprites && (
@@ -30,8 +27,9 @@ export const PokemonDisplayer = ({ pokemon }: PokemonDisplayerProps) => {
 
 const StatScreen = styled.div`
   border: 1px solid;
-  height: 100px;
-  width: 100px;
+  margin-top: -35px;
+  width: 60%;
+  max-height: 100px;
   font-family: "VT323";
   background: linear-gradient(
     14deg,
@@ -46,10 +44,13 @@ const StatScreen = styled.div`
 interface PokemonDetails {
   pokemon: Pokemon;
 }
-const PokemonDescription = ({ pokemon: { name } }: PokemonDetails) => {
+const Description = styled.h4`
+  margin: 7px;
+`;
+const PokemonDescription = ({ pokemon: { description } }: PokemonDetails) => {
   return (
     <StatScreen>
-      <h1>{name}</h1>
+      <Description>{description}</Description>
     </StatScreen>
   );
 };
