@@ -6,6 +6,8 @@ import styled from "../../../../styled.components";
 interface PokemonSpriteProps {
   sprites: PokemonSprite;
   name: string;
+  handleNext: () => void;
+  handlePrevious: () => void;
 }
 
 export const PokemonSpriteDisplayer = ({
@@ -54,7 +56,7 @@ export const PokemonSpriteDisplayer = ({
         <TopButtonsContainer />
         <Wrapper className={selectedSprite ? "on" : "off"}>
           <img src={selectedSprite} onLoad={showLoaderImage} />
-          <PokemonName name={name} />
+          <PokemonName>{name}</PokemonName>
         </Wrapper>
         <BottomButtonsContainer />
       </Screen>
@@ -65,6 +67,8 @@ export const PokemonSpriteDisplayer = ({
         handleChangeGender={handleChangeGender}
         handleRotate={handleRotate}
         handleShiny={handleShiny}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
       />
     </>
   );
@@ -77,9 +81,12 @@ export const PokemonSpriteDisplayer = ({
     }
   }
 };
-const PokemonName = styled.h1<{ name: String }>`
+const PokemonName = styled.h1`
   margin-top: -55px;
   font-size: 22px;
+  font-family: "VT323";
+  text-align: center;
+  text-transform: capitalize;
 `;
 const TopButtonsWrapper = styled.div`
   margin: auto;

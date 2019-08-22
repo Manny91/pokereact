@@ -20,6 +20,7 @@ export const PokedexComponent = ({
   useEffect(() => {
     getPokemons();
   }, []);
+  const [selectedPokemon, selectPokemon] = useState(pokemons[0]);
 
   const [opened, openPokedex] = useState(false);
 
@@ -32,7 +33,7 @@ export const PokedexComponent = ({
   return (
     <PokedexContainer>
       <PokedexLeft handleClick={() => openPokedex(!opened)}>
-        {opened && <PokemonDisp pokemons={pokemons} />}
+        {opened && <PokemonDisp pokemon={selectedPokemon} />}
       </PokedexLeft>
       <PageDivider pageOpen={opened} />
       <PokedexRight pageOpen={opened} />
@@ -136,13 +137,13 @@ const PokemonPageDisplayer = styled.div`
   padding: 30px;
 `;
 type pokemonDispState = {
-  pokemons: Pokemon[];
+  pokemon: Pokemon;
 };
-function PokemonDisp({ pokemons }: pokemonDispState) {
-  const firstPokemon = pokemons[0];
+function PokemonDisp({ pokemon }: pokemonDispState) {
+  //   const firstPokemon = pokemons[0];
   return (
     <PokemonPageDisplayer>
-      <PokedexPokemonDisplayer key={firstPokemon.id} pokemon={firstPokemon} />
+      <PokedexPokemonDisplayer key={pokemon.id} pokemon={pokemon} />
     </PokemonPageDisplayer>
   );
 }
