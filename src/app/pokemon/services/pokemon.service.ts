@@ -53,7 +53,7 @@ export interface PokemonResponse {
 }
 
 async function getPokemon(pokemonNo: number): Promise<Pokemon> {
-  const res = await httpClient.get(`pokemon/${pokemonNo}`);
+  const res = await httpClient.get(`pokemon/${pokemonNo}/`);
   return res.json();
 }
 

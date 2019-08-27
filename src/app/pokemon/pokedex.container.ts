@@ -13,11 +13,11 @@ import {
 } from "./store/pokemon.actions";
 import { PokedexState } from "../store/reducers";
 import { PokedexComponent } from "./pokedex";
-import { Pokemon } from "./services/pokemon-service";
+import { Pokemon } from "./services/pokemon.service";
 
 interface DispatchProps {
   getPokemons(): void;
-  getPokemon(url: string): Pokemon;
+  getPokemon(id: number): Pokemon;
 }
 
 export type PokemonsProps = PokemonState & DispatchProps;
@@ -26,6 +26,7 @@ function mapStateToProps(state: PokedexState): PokemonState {
   return {
     pokemons: getPokemons(state),
     error: getPokemonsError(state),
+    pokemonsLoaded: getPokemons(state).length,
     next: getPokemonsNext(state),
     previous: getPokemonsPrevious(state),
     loading: getPokemonsLoading(state)
@@ -34,7 +35,7 @@ function mapStateToProps(state: PokedexState): PokemonState {
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   getPokemons: () => dispatch(performGetPokemonsAction()),
-  getPokemon: url => dispatch(performGetPokemonAction(url))
+  getPokemon: id => dispatch(performGetPokemonAction(id))
 });
 
 export default connect(

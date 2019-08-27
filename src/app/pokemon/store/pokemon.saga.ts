@@ -1,7 +1,7 @@
 import {
   PokemonSpeciesDetail,
   FlavourText
-} from "./../services/pokemon-service";
+} from "../services/pokemon.service";
 import {
   PERFORM_GET_POKEMONS,
   PERFORM_GET_POKEMON,
@@ -18,7 +18,7 @@ import {
   put,
   takeEvery
 } from "redux-saga/effects";
-import pokemonService, { Pokemon } from "../services/pokemon-service";
+import pokemonService, { Pokemon } from "../services/pokemon.service";
 
 // Register all your watchers
 export default function* pokemonSagas() {
@@ -26,20 +26,20 @@ export default function* pokemonSagas() {
 }
 
 function* watchGetPokemons() {
-  yield takeLatest(PERFORM_GET_POKEMONS, requestPokemons);
-  yield takeEvery(PERFORM_GET_POKEMON, requestDetailsPokemon);
+//   yield takeLatest(PERFORM_GET_POKEMONS, requestPokemons);
+  yield takeLatest(PERFORM_GET_POKEMON, requestDetailsPokemon);
 }
 
-function* requestPokemons() {
-  const pokemons = yield call(pokemonService.getPokemons);
-  yield put(performGetPokemonsSuccessAction(pokemons));
-  yield all(
-    pokemons.results.map((pokemon: Pokemon) => {
-      const pokemonId = getPokemonIdFromUrl(pokemon);
-      return call(getPokemonDetails, pokemonId);
-    })
-  );
-}
+// function* requestPokemons() {
+//   const pokemons = yield call(pokemonService.getPokemons);
+//   yield put(performGetPokemonsSuccessAction(pokemons));
+//   yield all(
+//     pokemons.results.map((pokemon: Pokemon) => {
+//       const pokemonId = getPokemonIdFromUrl(pokemon);
+//       return call(getPokemonDetails, pokemonId);
+//     })
+//   );
+// }
 
 function* requestDetailsPokemon(action: GetPokemonAction) {
   const pokemon: Pokemon = yield call(
@@ -64,7 +64,7 @@ function* requestDetailsPokemon(action: GetPokemonAction) {
   yield put(performGetPokemonSuccessAction(pokemon));
 }
 
-function* getPokemonDetails(pokemonId: string) {
+function* getPokemonDetails(pokemonId: number) {
   yield put(performGetPokemonAction(pokemonId));
 }
 

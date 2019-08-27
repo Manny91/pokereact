@@ -9,6 +9,10 @@ export interface PokemonSpriteControlsProps {
   rotation: string;
   gender: string;
   shiny: boolean;
+  handleNext: () => void;
+  handlePrevious: () => void;
+  handleTop: () => void;
+  loading: boolean;
 }
 
 export const PokemonSpriteControls = ({
@@ -17,7 +21,11 @@ export const PokemonSpriteControls = ({
   handleChangeGender,
   rotation,
   gender,
-  shiny
+  shiny,
+  handleNext,
+  handlePrevious,
+  handleTop,
+  loading
 }: PokemonSpriteControlsProps) => {
   return (
     <ControlBar>
@@ -35,7 +43,7 @@ export const PokemonSpriteControls = ({
           className={shiny ? "active" : ""}
         />
       </SpriteControlsWrapper>
-      <ButtonCross />
+      <ButtonCross loading={loading} handleNext={handleNext} handlePrevious={handlePrevious} handleTop={handleTop}/>
     </ControlBar>
   );
 };

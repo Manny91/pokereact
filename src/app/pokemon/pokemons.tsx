@@ -6,16 +6,11 @@ export const PokemonsComponent = ({
   pokemons,
   loading,
   error,
-  previous,
   getPokemons,
-  getPokemon
 }: PokemonsProps) => {
   useEffect(() => {
     getPokemons();
   }, []);
-  if (loading) {
-    return <h1>loading...</h1>;
-  }
   if (error) {
     return <h1>error...</h1>;
   }
@@ -24,7 +19,8 @@ export const PokemonsComponent = ({
       <h1>pokemons</h1>
 
       {pokemons.map((pokemon, index) => {
-        return <PokedexPokemonDisplayer key={index} pokemon={pokemon} />;
+        // return <PokedexPokemonDisplayer loading={loading} handleNext={() => {}} handlePrevious={() => {}} key={index} pokemon={pokemon} />;
+        return <h1 key={index}>{pokemon.name}</h1>
       })}
     </div>
   );

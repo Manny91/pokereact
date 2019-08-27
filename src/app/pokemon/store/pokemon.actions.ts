@@ -1,4 +1,4 @@
-import { PokemonResponse, Pokemon } from "./../services/pokemon-service";
+import { PokemonResponse, Pokemon } from "../services/pokemon.service";
 
 export const PERFORM_GET_POKEMONS = "[Pokemons] Perform Get Pokemons";
 export const PERFORM_GET_POKEMON = "[Pokemons] Perform Get Pokemon";
@@ -29,7 +29,7 @@ export const performGetPokemonsAction = () => ({
   type: PERFORM_GET_POKEMONS
 });
 
-export const performGetPokemonAction = (payload: string) => ({
+export const performGetPokemonAction = (payload: number) => ({
   type: PERFORM_GET_POKEMON,
   payload
 });

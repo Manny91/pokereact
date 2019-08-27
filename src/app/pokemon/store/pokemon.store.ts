@@ -1,6 +1,6 @@
 import { PokedexState } from "./../../store/reducers";
 import { createSelector } from "reselect";
-import { Pokemon, PokemonResponse } from "./../services/pokemon-service";
+import { Pokemon, PokemonResponse } from "../services/pokemon.service";
 import {
   PERFORM_GET_POKEMONS_SUCCESS,
   PokemonsActions,
@@ -14,16 +14,16 @@ export interface PokemonState {
   loading: boolean;
   error: boolean;
   pokemons: Pokemon[];
-  next?: string;
+  pokemonsLoaded: number;
   previous?: string;
+  next?: string;
 }
 
 export const INITIAL_POKEMON_STATE: PokemonState = {
   loading: true,
   error: false,
   pokemons: [],
-  next: undefined,
-  previous: undefined
+  pokemonsLoaded: 0
 };
 
 export const reducer = (
@@ -48,27 +48,30 @@ export const reducer = (
     case PERFORM_GET_POKEMON:
       return {
         ...state,
-        loading: false,
+        loading: true,
         error: false
       };
     case PERFORM_GET_POKEMON_SUCCESS:
       return {
         loading: false,
         error: false,
-        pokemons: updatePokemon(state, action.payload)
+        ...updatePokemon(state, action.payload)
       };
     default:
       return state;
   }
 };
 
-function updatePokemon({ pokemons }: PokemonState, pokemon: Pokemon) {
-  return pokemons.map(pokemonStore => {
-    if (pokemonStore.name === pokemon.name) {
-      return { ...pokemon };
+function updatePokemon({ pokemons }: PokemonState, pokemon: Pokemon): {pokemons: Pokemon[], pokemonsLoaded: number} {
+    let storedPokemon = pokemons.find((storedPokemon) => {
+        return storedPokemon.id === pokemon.id || storedPokemon.name === pokemon.name
+    });
+    if (storedPokemon) {
+        storedPokemon = Object.assign({},storedPokemon, pokemon);
+    } else {
+        pokemons.push(pokemon);
     }
-    return pokemonStore;
-  });
+    return {pokemons: pokemons.sort((a,b) => a.id - b.id) , pokemonsLoaded: pokemons.length};
 }
 function addPokemons(
   state: PokemonState,
@@ -76,7 +79,7 @@ function addPokemons(
 ) {
   let pokemonStore = state.pokemons;
   pokemonStore = mergePokemons(state.pokemons, results);
-  return { next, previous, pokemons: pokemonStore };
+  return { next, previous, pokemons: pokemonStore, pokemonsLoaded: pokemonStore.length };
 }
 
 function mergePokemons(pokemonStore: Pokemon[], incomingPokemons: Pokemon[]) {
@@ -97,6 +100,10 @@ export const getPokemonsError = createSelector(
   pokemonState => pokemonState.error
 );
 
+export const getPokemonsLoaded = createSelector(
+    pokemonState,
+    pokemonState => pokemonState.pokemonsLoaded
+);
 export const getPokemonsNext = createSelector(
   pokemonState,
   pokemonState => pokemonState.next

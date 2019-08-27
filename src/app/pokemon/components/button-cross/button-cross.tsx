@@ -150,14 +150,20 @@ const Triangle = styled.div`
 background-color
 `;
 
-function Box(direction: Direction) {
+function Box(direction: Direction, clickHandler?: () => void, loading?: boolean) {
+  const emptyFunction = () => {};
   const BoxVertical = styled(BoxCentered)`
+    cursor: pointer;
     ${crossControl(direction)}
     ${Triangle} {
       ${triangle(direction, "22px", "14px", "black")}
     }
   `;
   const BoxDirectionStyled = styled(BoxStyled)`
+    cursor: pointer;
+    .disabled {
+        cursor: none;
+    }
     ${crossControl(direction)}
     ${Triangle} {
       ${triangle(direction, "22px", "14px", "black")}
@@ -165,26 +171,32 @@ function Box(direction: Direction) {
   `;
   if (direction === "TOP" || direction === "BOTTOM") {
     return (
-      <BoxVertical>
+      <BoxVertical onClick={loading ? emptyFunction : clickHandler} className={loading ? 'disabled': ''}>
         <Triangle />
       </BoxVertical>
     );
   }
   return (
-    <BoxDirectionStyled>
+    <BoxDirectionStyled onClick={loading ? emptyFunction : clickHandler} className={loading ? 'disabled': ''}>
       <Triangle />
     </BoxDirectionStyled>
   );
 }
 
-export function ButtonCross() {
+interface State  {
+    handleNext: () => void;
+    handlePrevious: () => void;
+    handleTop: () => void
+    loading: boolean;
+}
+export function ButtonCross({handleNext, handlePrevious, handleTop, loading}: State) {
   return (
     <ButtonCrossWrapper>
-      {Box("TOP")}
+      {Box("TOP", handleTop, loading)}
       <HorizontalWrapper>
-        {Box("LEFT")}
+        {Box("LEFT", handlePrevious, loading)}
         <MiddleBox />
-        {Box("RIGHT")}
+        {Box("RIGHT", handleNext, loading)}
       </HorizontalWrapper>
       {Box("BOTTOM")}
     </ButtonCrossWrapper>

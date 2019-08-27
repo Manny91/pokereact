@@ -4,7 +4,7 @@ import { PokedexPokemonDisplayer } from "./pokedex-pokemon-displayer";
 import styled from "../../styled.components";
 import PokedexLeft from "./components/pokedex-left/pokedex-left";
 import PokedexRight from "./components/pokedex-right/pokedex-right";
-import { Pokemon } from "./services/pokemon-service";
+    import { Pokemon } from "./services/pokemon.service";
 
 export interface PokedexPage {
   pageOpen: boolean;
@@ -13,27 +13,44 @@ export const PokedexComponent = ({
   pokemons,
   loading,
   error,
-  previous,
-  getPokemons,
-  getPokemon
+  getPokemon,
+  pokemonsLoaded
 }: PokemonsProps) => {
+
+    const [selectedPokemon, selectPokemon] = useState();
+    const [selectedId, changeSelectedId] = useState(1);
+    const [opened, openPokedex] = useState(false);
+
   useEffect(() => {
-    getPokemons();
-  }, []);
-  const [selectedPokemon, selectPokemon] = useState(pokemons[0]);
+    getPokemon(selectedId);
+  }, [selectedId]);
 
-  const [opened, openPokedex] = useState(false);
+  useEffect(() => {
+      selectPokemon(pokemons[selectedId-1])
+  }, [pokemonsLoaded, selectedId])
 
-  if (loading) {
-    return <h1>loading...</h1>;
+
+  function handlePrevious () {
+    changeSelectedId(selectedId - 1 || 1)
   }
+
+  function handleNext() {
+    changeSelectedId(selectedId+1)
+  }
+
+  function handleTop() {
+      changeSelectedId(1);
+  }
+
   if (error) {
     return <h1>error...</h1>;
   }
   return (
+
     <PokedexContainer>
       <PokedexLeft handleClick={() => openPokedex(!opened)}>
-        {opened && <PokemonDisp pokemon={selectedPokemon} />}
+        {opened && <PokemonDisp loading={loading} pokemon={selectedPokemon} handleNext={handleNext}
+        handlePrevious={handlePrevious} handleTop={handleTop} />}
       </PokedexLeft>
       <PageDivider pageOpen={opened} />
       <PokedexRight pageOpen={opened} />
@@ -138,12 +155,21 @@ const PokemonPageDisplayer = styled.div`
 `;
 type pokemonDispState = {
   pokemon: Pokemon;
+  loading: boolean;
+  handleNext: () => void;
+  handlePrevious: () => void;
+  handleTop: () => void;
 };
-function PokemonDisp({ pokemon }: pokemonDispState) {
-  //   const firstPokemon = pokemons[0];
-  return (
-    <PokemonPageDisplayer>
-      <PokedexPokemonDisplayer key={pokemon.id} pokemon={pokemon} />
-    </PokemonPageDisplayer>
-  );
+function PokemonDisp({ pokemon, handleNext, handlePrevious, loading, handleTop }: pokemonDispState) {
+    return (
+        <PokemonPageDisplayer>
+          <PokedexPokemonDisplayer
+            handleNext={handleNext}
+            handleTop = {handleTop}
+            loading={loading}
+            handlePrevious={handlePrevious}
+            pokemon={pokemon} />
+        </PokemonPageDisplayer>
+      );
+
 }
