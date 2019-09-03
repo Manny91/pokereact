@@ -194,6 +194,6 @@ const Wrapper = styled.div`
 
 const PokemonImage = styled.img`
   &.hide {
-      display: none;
+      visibility: hidden;
   }
 `

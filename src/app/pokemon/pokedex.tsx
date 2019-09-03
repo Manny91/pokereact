@@ -8,7 +8,12 @@ import PokedexRight from "./components/pokedex-right/pokedex-right";
 
 export interface PokedexPage {
   pageOpen: boolean;
+  pokemon: Pokemon
 }
+interface DividerPage {
+    pageOpen: boolean;
+}
+
 export const PokedexComponent = ({
   pokemons,
   loading,
@@ -53,7 +58,7 @@ export const PokedexComponent = ({
         handlePrevious={handlePrevious} handleTop={handleTop} />}
       </PokedexLeft>
       <PageDivider pageOpen={opened} />
-      <PokedexRight pageOpen={opened} />
+      <PokedexRight pokemon={selectedPokemon} pageOpen={opened} />
     </PokedexContainer>
   );
 };
@@ -137,7 +142,7 @@ const PageDividerWrapper = styled.div`
     }
   }
 `;
-function PageDivider({ pageOpen }: PokedexPage) {
+function PageDivider({ pageOpen }: DividerPage) {
   return (
     <PageDividerWrapper className={pageOpen ? "open" : ""}>
       <PageGap />

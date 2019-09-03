@@ -35,6 +35,16 @@ export interface EvolutionChainDetail {
   id: number;
   chain: EvolutionChain;
 }
+export interface PokemonStat {
+    base_stat: number;
+    effort: number;
+    stat: {name: string};
+}
+interface PokemonTypes {
+    slot: number;
+    type: {name: string}
+}
+
 export interface Pokemon {
   id: number;
   name: string;
@@ -44,6 +54,8 @@ export interface Pokemon {
   url: string;
   description: string;
   species: PokemonSpeciesDetail;
+  stats: PokemonStat[]
+  types: PokemonTypes[]
 }
 
 export interface PokemonResponse {
