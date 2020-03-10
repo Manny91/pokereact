@@ -36,13 +36,22 @@ export interface EvolutionChainDetail {
   chain: EvolutionChain;
 }
 export interface PokemonStat {
-    base_stat: number;
-    effort: number;
-    stat: {name: string};
+  base_stat: number;
+  effort: number;
+  stat: { name: string };
 }
 interface PokemonTypes {
-    slot: number;
-    type: {name: string}
+  slot: number;
+  type: { name: string };
+}
+export interface PokemonMove {
+  name: string;
+  url: string;
+  id: number;
+  accuracy: number;
+  power: number;
+  pp: number;
+  move: { name: string; url: string };
 }
 
 export interface Pokemon {
@@ -54,14 +63,19 @@ export interface Pokemon {
   url: string;
   description: string;
   species: PokemonSpeciesDetail;
-  stats: PokemonStat[]
-  types: PokemonTypes[]
+  stats: PokemonStat[];
+  types: PokemonTypes[];
+  moves: PokemonMove[];
 }
 
 export interface PokemonResponse {
   next: string;
   previous: string;
   results: Pokemon[];
+}
+
+export interface PokemonInfoDisplayer {
+  pokemon: Pokemon;
 }
 
 async function getPokemon(pokemonNo: number): Promise<Pokemon> {
@@ -83,9 +97,14 @@ async function getEvolutionChain(
   const res = await httpClient.get(`evolution-chain/${evolutionChainId}`);
   return res.json();
 }
+async function getMove(moveId: number): Promise<PokemonMove> {
+  const res = await httpClient.get(`move/${moveId}`);
+  return res.json();
+}
 export default {
   getPokemons,
   getPokemon,
   getSpecie,
-  getEvolutionChain
+  getEvolutionChain,
+  getMove
 };

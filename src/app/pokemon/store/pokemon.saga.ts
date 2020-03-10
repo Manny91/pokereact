@@ -1,14 +1,15 @@
-import {
-  PokemonSpeciesDetail,
-  FlavourText
-} from "../services/pokemon.service";
+import { PokemonMove } from "./../services/pokemon.service";
+import { PokemonSpeciesDetail, FlavourText } from "../services/pokemon.service";
 import {
   PERFORM_GET_POKEMONS,
   PERFORM_GET_POKEMON,
   performGetPokemonsSuccessAction,
   performGetPokemonSuccessAction,
   GetPokemonAction,
-  performGetPokemonAction
+  performGetPokemonAction,
+  PERFORM_GET_POKEMON_MOVE,
+  GetPokemonMoveAction,
+  performGetPokemonMoveSuccessAction
 } from "./pokemon.actions";
 import {
   all,
@@ -26,8 +27,9 @@ export default function* pokemonSagas() {
 }
 
 function* watchGetPokemons() {
-//   yield takeLatest(PERFORM_GET_POKEMONS, requestPokemons);
+  //   yield takeLatest(PERFORM_GET_POKEMONS, requestPokemons);
   yield takeLatest(PERFORM_GET_POKEMON, requestDetailsPokemon);
+  yield takeLatest(PERFORM_GET_POKEMON_MOVE, requestPokemonMove);
 }
 
 // function* requestPokemons() {
@@ -60,10 +62,15 @@ function* requestDetailsPokemon(action: GetPokemonAction) {
   );
   specieDetail.evolution_chain = evolutionChain;
   pokemon.species = specieDetail;
+  pokemon.moves = pokemon.moves.map(flatMoves);
   pokemon.description = getFlavorEngText(specieDetail);
   yield put(performGetPokemonSuccessAction(pokemon));
 }
 
+function* requestPokemonMove(action: GetPokemonMoveAction) {
+  const move = yield call(pokemonService.getMove, action.payload);
+  yield put(performGetPokemonMoveSuccessAction(move));
+}
 function* getPokemonDetails(pokemonId: number) {
   yield put(performGetPokemonAction(pokemonId));
 }
@@ -72,9 +79,18 @@ function getPokemonIdFromUrl(pokemon: Pokemon) {
   return pokemon.url.split("pokemon/")[1].replace("/", "");
 }
 
+function getPokemonMoveIdFromUrl(url: string): number {
+  return +url.split("move/")[1].replace("/", "");
+}
+
 function getFlavorEngText(specieDetail: PokemonSpeciesDetail): string {
   const flavorEntryEng = specieDetail.flavor_text_entries.find(flavour => {
     return flavour.language.name === "en";
   });
   return flavorEntryEng ? flavorEntryEng.flavor_text : "";
+}
+
+function flatMoves(pokemonMove: PokemonMove): PokemonMove {
+  const id = getPokemonMoveIdFromUrl(pokemonMove.move.url);
+  return Object.assign({ id: id }, pokemonMove, pokemonMove.move);
 }

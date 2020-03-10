@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { configureStore } from "../store";
 import { theme } from "../theme";
-import PokemonsContainer from "./pokemon/pokemons.container";
 import PokedexContainer from "../app/pokemon/pokedex.container";
 function App() {
   return (
@@ -12,8 +11,8 @@ function App() {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Switch>
-            <Route path="/pokedex" component={PokedexContainer} />
-            <Route exact component={PokemonsContainer} />
+            <Route component={PokedexContainer} />
+            {/* <Route exact component={PokemonsContainer} /> */}
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

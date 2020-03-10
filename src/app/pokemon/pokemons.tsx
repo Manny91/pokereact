@@ -6,7 +6,7 @@ export const PokemonsComponent = ({
   pokemons,
   loading,
   error,
-  getPokemons,
+  getPokemons
 }: PokemonsProps) => {
   useEffect(() => {
     getPokemons();
@@ -20,7 +20,7 @@ export const PokemonsComponent = ({
 
       {pokemons.map((pokemon, index) => {
         // return <PokedexPokemonDisplayer loading={loading} handleNext={() => {}} handlePrevious={() => {}} key={index} pokemon={pokemon} />;
-        return <h1 key={index}>{pokemon.name}</h1>
+        return <h1 key={index}>{pokemon.name}</h1>;
       })}
     </div>
   );

@@ -1,17 +1,21 @@
-import React, { useEffect, useState, ReactNode } from "react";
+import React, { useEffect, useState } from "react";
 import { PokemonsProps } from "./pokemons.container";
 import { PokedexPokemonDisplayer } from "./pokedex-pokemon-displayer";
 import styled from "../../styled.components";
 import PokedexLeft from "./components/pokedex-left/pokedex-left";
 import PokedexRight from "./components/pokedex-right/pokedex-right";
-    import { Pokemon } from "./services/pokemon.service";
+import { Pokemon, PokemonMove } from "./services/pokemon.service";
+import { PokemonState } from "./store/pokemon.store";
 
 export interface PokedexPage {
   pageOpen: boolean;
-  pokemon: Pokemon
+  pokemon: Pokemon;
+  handleMovePrevious: () => void;
+  handleMoveNext: () => void;
+  move: PokemonMove;
 }
 interface DividerPage {
-    pageOpen: boolean;
+  pageOpen: boolean;
 }
 
 export const PokedexComponent = ({
@@ -19,46 +23,90 @@ export const PokedexComponent = ({
   loading,
   error,
   getPokemon,
-  pokemonsLoaded
+  getPokemonMove,
+  pokemonMoves,
+  pokemonsLoaded,
+  loadingMoves
 }: PokemonsProps) => {
-
-    const [selectedPokemon, selectPokemon] = useState();
-    const [selectedId, changeSelectedId] = useState(1);
-    const [opened, openPokedex] = useState(false);
+  const [selectedPokemon, selectPokemon] = useState();
+  const [selectedId, changeSelectedId] = useState(1);
+  const [opened, openPokedex] = useState(false);
+  const [selectedMoveIndex, setSelectedMoveIndex] = useState(0);
+  const [selectedMove, setSelectedMove] = useState();
 
   useEffect(() => {
     getPokemon(selectedId);
   }, [selectedId]);
+  useEffect(() => {
+    if (selectedPokemon) {
+      const move: PokemonMove = selectedPokemon.moves[selectedMoveIndex];
+      getPokemonMove(move.id);
+    }
+  }, [selectedMoveIndex, selectedPokemon]);
 
   useEffect(() => {
-      selectPokemon(pokemons[selectedId-1])
-  }, [pokemonsLoaded, selectedId])
+    selectPokemon(pokemons[selectedId - 1]);
+  }, [pokemonsLoaded, selectedId]);
 
-
-  function handlePrevious () {
-    changeSelectedId(selectedId - 1 || 1)
+  useEffect(() => {
+    console.log(
+      "asdlfaklsdf",
+      selectedPokemon,
+      pokemonMoves,
+      selectedMoveIndex
+    );
+    if (selectedPokemon) {
+      const move: PokemonMove = selectedPokemon.moves[selectedMoveIndex];
+      const pokeMove = pokemonMoves.find(
+        (pokeMove: PokemonMove) => pokeMove.id === move.id
+      );
+      setSelectedMove(pokeMove);
+    }
+  }, [loadingMoves, selectedMoveIndex]);
+  function handlePrevious() {
+    changeSelectedId(selectedId - 1 || 1);
   }
 
   function handleNext() {
-    changeSelectedId(selectedId+1)
+    changeSelectedId(selectedId + 1);
   }
 
   function handleTop() {
-      changeSelectedId(1);
+    changeSelectedId(1);
+  }
+
+  function handleMoveNext() {
+    setSelectedMoveIndex(selectedMoveIndex + 1);
+  }
+  function handleMovePrevious() {
+    setSelectedMoveIndex(Math.max(0, selectedMoveIndex - 1));
   }
 
   if (error) {
     return <h1>error...</h1>;
   }
+  console.log("selectedMove", selectedMove, loadingMoves);
   return (
-
     <PokedexContainer>
       <PokedexLeft handleClick={() => openPokedex(!opened)}>
-        {opened && <PokemonDisp loading={loading} pokemon={selectedPokemon} handleNext={handleNext}
-        handlePrevious={handlePrevious} handleTop={handleTop} />}
+        {opened && (
+          <PokemonDisp
+            loading={loading}
+            pokemon={selectedPokemon}
+            handleNext={handleNext}
+            handlePrevious={handlePrevious}
+            handleTop={handleTop}
+          />
+        )}
       </PokedexLeft>
       <PageDivider pageOpen={opened} />
-      <PokedexRight pokemon={selectedPokemon} pageOpen={opened} />
+      <PokedexRight
+        pokemon={selectedPokemon}
+        move={selectedMove}
+        handleMoveNext={handleMoveNext}
+        handleMovePrevious={handleMovePrevious}
+        pageOpen={opened}
+      />
     </PokedexContainer>
   );
 };
@@ -165,16 +213,22 @@ type pokemonDispState = {
   handlePrevious: () => void;
   handleTop: () => void;
 };
-function PokemonDisp({ pokemon, handleNext, handlePrevious, loading, handleTop }: pokemonDispState) {
-    return (
-        <PokemonPageDisplayer>
-          <PokedexPokemonDisplayer
-            handleNext={handleNext}
-            handleTop = {handleTop}
-            loading={loading}
-            handlePrevious={handlePrevious}
-            pokemon={pokemon} />
-        </PokemonPageDisplayer>
-      );
-
+function PokemonDisp({
+  pokemon,
+  handleNext,
+  handlePrevious,
+  loading,
+  handleTop
+}: pokemonDispState) {
+  return (
+    <PokemonPageDisplayer>
+      <PokedexPokemonDisplayer
+        handleNext={handleNext}
+        handleTop={handleTop}
+        loading={loading}
+        handlePrevious={handlePrevious}
+        pokemon={pokemon}
+      />
+    </PokemonPageDisplayer>
+  );
 }

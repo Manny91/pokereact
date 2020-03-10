@@ -1,22 +1,41 @@
 import styled from "../../../../styled.components";
-import React, { ReactNode } from "react";
+import React from "react";
 import PokedexTopSeparator from "../pokedex-top-separator/pokedex-top-separator";
 import { PokedexPage } from "../../pokedex";
-import { Pokemon, PokemonStat } from "../../services/pokemon.service";
+import { PokemonStatsDisplayer } from "../stats-displayer/stats-displayer";
+import { PokemonTypeDisplayer } from "../type-displayer/type-displayer";
+import { PokemonMoveDisplayer } from "../move-displayer/moves-displayer";
 
-
-function PokedexRight({ pageOpen, pokemon }: PokedexPage) {
+function PokedexRight({
+  pageOpen,
+  pokemon,
+  handleMoveNext,
+  handleMovePrevious,
+  move
+}: PokedexPage) {
   return (
     <PokedexRightPage className={pageOpen ? "page-open" : ""}>
       <TopWrapper>
         <PokedexTopSeparator orientation="RIGHT" />
       </TopWrapper>
-      <Panel >
+      <Panel>
+        <Content>
           <Container>
-            <PokemonStatsDisplayer pokemon={pokemon} />
-            <PokemonTypeDisplayer pokemon={pokemon}/>
+            <InfoDisplayer>
+              <PokemonStatsDisplayer pokemon={pokemon} />
+              <PokemonTypeDisplayer pokemon={pokemon} />
+            </InfoDisplayer>
           </Container>
-
+          <Container>
+            <MoveDisplayer>
+              <PokemonMoveDisplayer
+                handleMoveNext={handleMoveNext}
+                handleMovePrevious={handleMovePrevious}
+                move={move}
+              ></PokemonMoveDisplayer>
+            </MoveDisplayer>
+          </Container>
+        </Content>
       </Panel>
     </PokedexRightPage>
   );
@@ -63,141 +82,33 @@ const Panel = styled.div`
   border: 10px double;
   border-top: none;
   position: relative;
-  transform: rotateY(-180deg)
+  transform: rotateY(-180deg);
 `;
 const TopWrapper = styled.div`
   width: 560px;
 `;
-
+const Content = styled.div`
+  padding: 15px;
+`;
 const Container = styled.div`
-    padding: 15px;
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: center;
+`;
+
+const DisplayerWrapper = styled.div`
+  padding: 5px;
+  display: flex;
+  width: 85%;
+  border: groove #4e4e4e 3px;
+`;
+const InfoDisplayer = styled(DisplayerWrapper)`
+    height: 160px;
+    border-bottom: none;
+}
+`;
+
+const MoveDisplayer = styled(DisplayerWrapper)`
+  border-top: none;
+  height: 100px;
 `;
 export default PokedexRight;
-
-interface PokemonInfoDisplayer {
-    pokemon: Pokemon;
-};
-
-function statToString({stat, base_stat}: PokemonStat): string {
-    if(stat) {
-        const maxLengthString = 20;
-        const statName = stat.name;
-        const pokeStatStringLength = statName.length + base_stat.toString().length;
-        return statName+new Array(maxLengthString - pokeStatStringLength).fill('.').join("")+base_stat;
-    }
-    return "";
-}
-
-function PokemonStatsDisplayer({pokemon}: PokemonInfoDisplayer) {
-
-    return pokemon && pokemon.stats ? (
-        <StatsWrapper>
-            {pokemon.stats.map((stat, i) => {
-                return <PokeStatContainer>{statToString(stat)}</PokeStatContainer>
-            })}
-        </StatsWrapper>
-    ) : null
-}
-const StatsWrapper = styled.section`
-    background: linear-gradient(14deg, rgb(165, 205, 83) 60%, rgb(193, 217, 144) 65%);
-    padding: 15px 20px;
-    border-radius: 3px;
-    font-family: "VT323";
-    border: inset #879a65 3px;
-`
-
-const PokeStatContainer = styled.p`
-    margin: 5px 0px;
-    font-weight: bold;
-    text-transform: capitalize;
-`
-const PokemonTypeBanner = styled.div`
-    width: 150px;
-    height: 35px;
-    border-top-right-radius: 7px;
-    border-top-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-    border-bottom-left-radius: 7px;
-    text-transform: uppercase;
-    text-align: center;
-    margin: 7px 0px;
-    border: groove #757575 3px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    font-family: "VT323";
-    font-size: 19px;
-    font-weight:bold;
-    &.normal {
-        background-color: #bfbfbf;
-    }
-    &.fighting {
-        background-color: #d87c58;
-    }
-    &.flying {
-        background-color: #999ade;
-    }
-    &.poison {
-        background-color: #925192;
-    }
-    &.ground {
-        background-color: #dea761;
-    }
-    &.rock {
-        background-color: #897864;
-    }
-    &.bug {
-        background-color: #b1c967;
-    }
-    &.ghost {
-        background-color: #c195dc;
-    }
-    &.steel {
-        background-color: #49769c;
-    }
-    &.fire {
-        background-color: #cf1414;
-    }
-    &.water {
-        background-color: #1689de;
-    }
-    &.grass {
-        background-color: #47a047;
-    }
-    &.electric {
-        background-color: #e6b700;
-    }
-    &.psychic {
-        background-color: #fa43b8;
-    }
-    &.ice {
-        background-color: #98c3de;
-    }
-    &.dragon {
-        background-color: #89315d;
-    }
-    &.dark {
-        background-color: #282433;
-    }
-    &.fairy {
-        background-color: #dca0ce;
-    }
-    &.unknown {
-        background-color: #545454;
-    }
-    &.shadow {
-        background-color: #364163;
-    }
-
-`;
-
-
-function PokemonTypeDisplayer({pokemon}: PokemonInfoDisplayer) {
-    return pokemon && pokemon.types ? (
-        <div>
-        {pokemon.types.map((pokeType, index) => <PokemonTypeBanner className={pokeType.type.name} key={index}>{pokeType.type.name}</PokemonTypeBanner>)}
-        </div>
-    ) : null
-}
