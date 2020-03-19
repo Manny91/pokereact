@@ -2,6 +2,7 @@ import { Pokemon } from "./services/pokemon.service";
 import React from "react";
 import styled from "../../styled.components";
 import { PokemonSpriteDisplayer } from "./components/sprite-displayer/pokemon-sprite";
+import { Loading, LoadingWrapper } from "./components/loading/loading";
 
 interface PokedexPokemonDisplayerProps {
   pokemon?: Pokemon;
@@ -30,7 +31,7 @@ export const PokedexPokemonDisplayer = ({
         handleTop={handleTop}
         handlePrevious={handlePrevious}
       />
-      <PokemonDescription description={loading ? "loading..." : description} />
+      <PokemonDescription description={description} loading={loading} />
     </>
   );
 };
@@ -50,17 +51,22 @@ const StatScreen = styled.div`
   border-radius: 3px;
   font-family: "VT323";
   border: inset #879a65 3px;
+  ${LoadingWrapper} {
+    margin: 7px;
+  }
 `;
 interface PokemonDetails {
   description: string;
+  loading: boolean;
 }
 const Description = styled.h4`
   margin: 7px;
 `;
-const PokemonDescription = ({ description }: PokemonDetails) => {
+const PokemonDescription = ({ description, loading }: PokemonDetails) => {
   return (
     <StatScreen>
-      <Description>{description}</Description>
+      {!loading && <Description>{description}</Description>}
+      {loading && <Loading />}
     </StatScreen>
   );
 };

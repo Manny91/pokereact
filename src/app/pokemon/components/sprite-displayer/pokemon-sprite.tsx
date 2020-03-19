@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PokemonSprite } from "../../services/pokemon.service";
 import { PokemonSpriteControls } from "./pokemon-sprite-controls";
 import styled from "../../../../styled.components";
+import { Loading, LoadingWrapper } from "../loading/loading";
 
 interface PokemonSpriteProps {
   sprites: PokemonSprite;
@@ -18,7 +19,7 @@ export const PokemonSpriteDisplayer = ({
   loading,
   handleNext,
   handlePrevious,
-  handleTop,
+  handleTop
 }: PokemonSpriteProps) => {
   const [selectedSprite, setSelectedSprite] = useState(sprites.front_default);
   const [gender, setGender] = useState("default");
@@ -60,11 +61,20 @@ export const PokemonSpriteDisplayer = ({
     <>
       <Screen>
         <TopButtonsContainer />
-        <Wrapper className={loading ? "off" : "on"}>
-          <PokemonImage className={loading ? "hide" : "show"} src={selectedSprite} onLoadStart={showLoaderImage} />
-          <PokemonName>{name}</PokemonName>
+        <Wrapper>
+          {loading && <Loading />}
+          {!loading && (
+            <>
+              <PokemonName>{name}</PokemonName>
+              <PokemonImage
+                className={loading ? "hide" : "show"}
+                src={selectedSprite}
+                onLoadStart={showLoaderImage}
+              />
+            </>
+          )}
         </Wrapper>
-        <BottomButtonsContainer/>
+        <BottomButtonsContainer />
       </Screen>
       <PokemonSpriteControls
         gender={gender}
@@ -82,21 +92,23 @@ export const PokemonSpriteDisplayer = ({
   );
 
   function changeSelectedSprite(strToSprite: string) {
-      if(sprites) {
-        const spriteEntries = Object.keys(sprites);
-        const spriteValues = Object.values(sprites);
-        if (spriteValues[spriteEntries.indexOf(strToSprite)]) {
+    if (sprites) {
+      const spriteEntries = Object.keys(sprites);
+      const spriteValues = Object.values(sprites);
+      if (spriteValues[spriteEntries.indexOf(strToSprite)]) {
         setSelectedSprite(spriteValues[spriteEntries.indexOf(strToSprite)]);
-        }
       }
+    }
   }
 };
 const PokemonName = styled.h1`
-  margin-top: -50px;
   font-size: 22px;
   font-family: "VT323";
   text-align: center;
   text-transform: capitalize;
+  position: absolute;
+  top: 0px;
+  width: 100%;
 `;
 const TopButtonsWrapper = styled.div`
   margin: auto;
@@ -172,6 +184,7 @@ const Wrapper = styled.div`
   margin: auto;
   height: 180px;
   width: 200px;
+  position: relative;
   background: linear-gradient(
     15deg,
     #cad5b5 64%,
@@ -183,17 +196,23 @@ const Wrapper = styled.div`
   );
   border: inset #9aa28b 3px;
   border-radius: 8px;
+  display: flex;
+  justify-content: center;
   img {
-    width: 100%;
+    margin-top: 15px;
+    width: 150px;
     image-rendering: pixelated;
   }
-  &.off {
-    background: #292929;
+
+  ${LoadingWrapper} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
 const PokemonImage = styled.img`
   &.hide {
-      visibility: hidden;
+    visibility: hidden;
   }
-`
+`;
