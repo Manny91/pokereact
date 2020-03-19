@@ -1,32 +1,38 @@
-import React, { useState, useEffect } from "react";
-import {
-  PokemonInfoDisplayer,
-  PokemonMove
-} from "../../services/pokemon.service";
+import React from "react";
+import { PokemonMove } from "../../services/pokemon.service";
 import styled from "../../../../styled.components";
+import { Loading } from "../loading/loading";
 
 type State = {
   handleMoveNext: () => void;
   handleMovePrevious: () => void;
   move: PokemonMove;
+  loadingMoves: boolean;
 };
 export function PokemonMoveDisplayer({
   handleMoveNext,
   handleMovePrevious,
-  move
+  move,
+  loadingMoves
 }: State) {
+  function displayMovement(move: PokemonMove) {
+    return (
+      <>
+        <MovementName>{move.name}</MovementName>
+        <MovementStatList>
+          <MovementStat>Power : {move.power || "None"}</MovementStat>
+          <MovementStat>Accuracy : {move.accuracy}</MovementStat>
+          <MovementStat>PP : {move.pp}</MovementStat>
+        </MovementStatList>
+      </>
+    );
+  }
   return (
     <>
       <MovesWrapper>
         <MoveInfoWrapper>
-          {move && <MovementName>{move.name}</MovementName>}
-          <MovementStatList>
-            {move && (
-              <MovementStat>Power : {move.power || "None"}</MovementStat>
-            )}
-            {move && <MovementStat>Accuracy : {move.accuracy}</MovementStat>}
-            {move && <MovementStat>PP : {move.pp}</MovementStat>}
-          </MovementStatList>
+          {loadingMoves && <Loading />}
+          {!loadingMoves && move && displayMovement(move)}
         </MoveInfoWrapper>
         <MoveTypeWrapper></MoveTypeWrapper>
       </MovesWrapper>
@@ -42,7 +48,6 @@ export function PokemonMoveDisplayer({
     </>
   );
 }
-const MoveDetail = styled.div``;
 
 const MovesWrapper = styled.section`
   background: linear-gradient(

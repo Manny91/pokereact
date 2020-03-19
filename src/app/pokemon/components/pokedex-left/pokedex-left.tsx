@@ -1,5 +1,5 @@
 import styled from "../../../../styled.components";
-import React, { ReactChild, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import PokedexCircles from "./pokedex-circles/pokedex-circles";
 import PokedexTopSeparator from "../pokedex-top-separator/pokedex-top-separator";
 

@@ -7,7 +7,6 @@ import {
   getPokemonsLoading,
   getPokemonMoves,
   getPokemonsLoaded,
-  getPokemonMovesLoaded,
   getLoadingMoves
 } from "./store/pokemon.store";
 import { connect } from "react-redux";
@@ -47,7 +46,4 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   getPokemonMove: moveId => dispatch(performGetPokemonMoveAction(moveId))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PokedexComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(PokedexComponent);

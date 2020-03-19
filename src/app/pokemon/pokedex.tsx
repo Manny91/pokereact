@@ -13,6 +13,8 @@ export interface PokedexPage {
   handleMovePrevious: () => void;
   handleMoveNext: () => void;
   move: PokemonMove;
+  loading: boolean;
+  loadingMoves: boolean;
 }
 interface DividerPage {
   pageOpen: boolean;
@@ -49,12 +51,6 @@ export const PokedexComponent = ({
   }, [pokemonsLoaded, selectedId]);
 
   useEffect(() => {
-    console.log(
-      "asdlfaklsdf",
-      selectedPokemon,
-      pokemonMoves,
-      selectedMoveIndex
-    );
     if (selectedPokemon) {
       const move: PokemonMove = selectedPokemon.moves[selectedMoveIndex];
       const pokeMove = pokemonMoves.find(
@@ -81,11 +77,9 @@ export const PokedexComponent = ({
   function handleMovePrevious() {
     setSelectedMoveIndex(Math.max(0, selectedMoveIndex - 1));
   }
-
   if (error) {
     return <h1>error...</h1>;
   }
-  console.log("selectedMove", selectedMove, loadingMoves);
   return (
     <PokedexContainer>
       <PokedexLeft handleClick={() => openPokedex(!opened)}>
@@ -106,6 +100,8 @@ export const PokedexComponent = ({
         handleMoveNext={handleMoveNext}
         handleMovePrevious={handleMovePrevious}
         pageOpen={opened}
+        loading={loading}
+        loadingMoves={loadingMoves}
       />
     </PokedexContainer>
   );

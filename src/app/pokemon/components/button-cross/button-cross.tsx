@@ -68,7 +68,7 @@ function crossControl(
       return crossControlStyle + directionBottom;
     case "LEFT":
       return crossControlStyle + directionLeft;
-    case "RIGHT":
+    default:
       return crossControlStyle + directionRight;
   }
 }
@@ -110,7 +110,7 @@ function triangle(
       return triangleStyle + directionBottom;
     case "LEFT":
       return triangleStyle + directionLeft;
-    case "RIGHT":
+    default:
       return triangleStyle + directionRight;
   }
 }
@@ -150,7 +150,11 @@ const Triangle = styled.div`
 background-color
 `;
 
-function Box(direction: Direction, clickHandler?: () => void, loading?: boolean) {
+function Box(
+  direction: Direction,
+  clickHandler?: () => void,
+  loading?: boolean
+) {
   const emptyFunction = () => {};
   const BoxVertical = styled(BoxCentered)`
     cursor: pointer;
@@ -162,7 +166,7 @@ function Box(direction: Direction, clickHandler?: () => void, loading?: boolean)
   const BoxDirectionStyled = styled(BoxStyled)`
     cursor: pointer;
     .disabled {
-        cursor: none;
+      cursor: none;
     }
     ${crossControl(direction)}
     ${Triangle} {
@@ -171,25 +175,36 @@ function Box(direction: Direction, clickHandler?: () => void, loading?: boolean)
   `;
   if (direction === "TOP" || direction === "BOTTOM") {
     return (
-      <BoxVertical onClick={loading ? emptyFunction : clickHandler} className={loading ? 'disabled': ''}>
+      <BoxVertical
+        onClick={loading ? emptyFunction : clickHandler}
+        className={loading ? "disabled" : ""}
+      >
         <Triangle />
       </BoxVertical>
     );
   }
   return (
-    <BoxDirectionStyled onClick={loading ? emptyFunction : clickHandler} className={loading ? 'disabled': ''}>
+    <BoxDirectionStyled
+      onClick={loading ? emptyFunction : clickHandler}
+      className={loading ? "disabled" : ""}
+    >
       <Triangle />
     </BoxDirectionStyled>
   );
 }
 
-interface State  {
-    handleNext: () => void;
-    handlePrevious: () => void;
-    handleTop: () => void
-    loading: boolean;
+interface State {
+  handleNext: () => void;
+  handlePrevious: () => void;
+  handleTop: () => void;
+  loading: boolean;
 }
-export function ButtonCross({handleNext, handlePrevious, handleTop, loading}: State) {
+export function ButtonCross({
+  handleNext,
+  handlePrevious,
+  handleTop,
+  loading
+}: State) {
   return (
     <ButtonCrossWrapper>
       {Box("TOP", handleTop, loading)}

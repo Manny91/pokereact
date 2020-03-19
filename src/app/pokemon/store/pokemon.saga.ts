@@ -1,9 +1,7 @@
 import { PokemonMove } from "./../services/pokemon.service";
-import { PokemonSpeciesDetail, FlavourText } from "../services/pokemon.service";
+import { PokemonSpeciesDetail } from "../services/pokemon.service";
 import {
-  PERFORM_GET_POKEMONS,
   PERFORM_GET_POKEMON,
-  performGetPokemonsSuccessAction,
   performGetPokemonSuccessAction,
   GetPokemonAction,
   performGetPokemonAction,
@@ -11,14 +9,7 @@ import {
   GetPokemonMoveAction,
   performGetPokemonMoveSuccessAction
 } from "./pokemon.actions";
-import {
-  all,
-  takeLatest,
-  fork,
-  call,
-  put,
-  takeEvery
-} from "redux-saga/effects";
+import { all, takeLatest, fork, call, put } from "redux-saga/effects";
 import pokemonService, { Pokemon } from "../services/pokemon.service";
 
 // Register all your watchers
@@ -71,13 +62,13 @@ function* requestPokemonMove(action: GetPokemonMoveAction) {
   const move = yield call(pokemonService.getMove, action.payload);
   yield put(performGetPokemonMoveSuccessAction(move));
 }
-function* getPokemonDetails(pokemonId: number) {
-  yield put(performGetPokemonAction(pokemonId));
-}
+// function* getPokemonDetails(pokemonId: number) {
+//   yield put(performGetPokemonAction(pokemonId));
+// }
 
-function getPokemonIdFromUrl(pokemon: Pokemon) {
-  return pokemon.url.split("pokemon/")[1].replace("/", "");
-}
+// function getPokemonIdFromUrl(pokemon: Pokemon) {
+//   return pokemon.url.split("pokemon/")[1].replace("/", "");
+// }
 
 function getPokemonMoveIdFromUrl(url: string): number {
   return +url.split("move/")[1].replace("/", "");

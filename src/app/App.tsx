@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { ThemeProvider } from "../styled.components";
+import { ThemeProvider } from "../styled.components";
 import { Provider } from "react-redux";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { configureStore } from "../store";
@@ -12,7 +12,6 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route component={PokedexContainer} />
-            {/* <Route exact component={PokemonsContainer} /> */}
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

@@ -1,4 +1,4 @@
-import styled from "../../../../styled.components";
+import styled, { keyframes } from "../../../../styled.components";
 import React from "react";
 import PokedexTopSeparator from "../pokedex-top-separator/pokedex-top-separator";
 import { PokedexPage } from "../../pokedex";
@@ -11,7 +11,9 @@ function PokedexRight({
   pokemon,
   handleMoveNext,
   handleMovePrevious,
-  move
+  move,
+  loading,
+  loadingMoves
 }: PokedexPage) {
   return (
     <PokedexRightPage className={pageOpen ? "page-open" : ""}>
@@ -32,6 +34,7 @@ function PokedexRight({
                 handleMoveNext={handleMoveNext}
                 handleMovePrevious={handleMovePrevious}
                 move={move}
+                loadingMoves={loadingMoves}
               ></PokemonMoveDisplayer>
             </MoveDisplayer>
           </Container>
@@ -41,6 +44,14 @@ function PokedexRight({
   );
 }
 
+const openingPageAnimation = keyframes`
+    0% {
+        left: -100px;
+    }
+    100% {
+        left: 40px;
+    }
+`;
 const PokedexRightPage = styled.div`
   position: absolute;
   left: 40px;
@@ -54,22 +65,10 @@ const PokedexRightPage = styled.div`
   transform-origin: right;
   transition: all 0.5s ease-in-out;
   &.page-open {
-    -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 0.5s; /* Safari 4.0 - 8.0 */
-    animation-name: example;
-    animation-duration: 0.5s;
     visibility: visible;
     transform: perspective(1500px) translateZ(0px) translateX(0px)
       translateY(0px) rotateY(-180deg);
-    animation-name: opening;
-    @keyframes opening {
-      0% {
-        left: -100px;
-      }
-      100% {
-        left: 40px;
-      }
-    }
+    animation: ${openingPageAnimation} 0.5s;
   }
 `;
 
