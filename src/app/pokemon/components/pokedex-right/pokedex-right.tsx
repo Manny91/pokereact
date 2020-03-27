@@ -5,6 +5,7 @@ import { PokedexPage } from "../../pokedex";
 import { PokemonStatsDisplayer } from "../stats-displayer/stats-displayer";
 import { PokemonTypeDisplayer } from "../type-displayer/type-displayer";
 import { PokemonMoveDisplayer } from "../move-displayer/moves-displayer";
+import { EvolutionChainDisplayer } from "../evolution-chain-displayer/evolution-chain-displayer";
 
 function PokedexRight({
   pageOpen,
@@ -12,9 +13,10 @@ function PokedexRight({
   handleMoveNext,
   handleMovePrevious,
   move,
-  loading,
   loadingMoves
 }: PokedexPage) {
+  const evolutions =
+    pokemon && pokemon && pokemon.species && pokemon.species.evolutions;
   return (
     <PokedexRightPage className={pageOpen ? "page-open" : ""}>
       <TopWrapper>
@@ -23,20 +25,27 @@ function PokedexRight({
       <Panel>
         <Content>
           <Container>
-            <InfoDisplayer>
+            <InfoSectionDisplayer>
               <PokemonStatsDisplayer pokemon={pokemon} />
               <PokemonTypeDisplayer pokemon={pokemon} />
-            </InfoDisplayer>
+            </InfoSectionDisplayer>
           </Container>
           <Container>
-            <MoveDisplayer>
+            <MoveSectionDisplayer>
               <PokemonMoveDisplayer
                 handleMoveNext={handleMoveNext}
                 handleMovePrevious={handleMovePrevious}
                 move={move}
                 loadingMoves={loadingMoves}
               ></PokemonMoveDisplayer>
-            </MoveDisplayer>
+            </MoveSectionDisplayer>
+          </Container>
+          <Container>
+            <EvolutionSectionDisplayer>
+              {evolutions && (
+                <EvolutionChainDisplayer evolutionChain={evolutions} />
+              )}
+            </EvolutionSectionDisplayer>
           </Container>
         </Content>
       </Panel>
@@ -100,14 +109,17 @@ const DisplayerWrapper = styled.div`
   width: 85%;
   border: groove #4e4e4e 3px;
 `;
-const InfoDisplayer = styled(DisplayerWrapper)`
+const InfoSectionDisplayer = styled(DisplayerWrapper)`
     height: 160px;
     border-bottom: none;
 }
 `;
 
-const MoveDisplayer = styled(DisplayerWrapper)`
-  border-top: none;
+const MoveSectionDisplayer = styled(DisplayerWrapper)`
   height: 100px;
+`;
+const EvolutionSectionDisplayer = styled(DisplayerWrapper)`
+  border-top: none;
+  height: 120px;
 `;
 export default PokedexRight;

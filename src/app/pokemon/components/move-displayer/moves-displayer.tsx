@@ -3,7 +3,7 @@ import { PokemonMove } from "../../services/pokemon.service";
 import styled from "../../../../styled.components";
 import { Loading } from "../loading/loading";
 
-type State = {
+type Props = {
   handleMoveNext: () => void;
   handleMovePrevious: () => void;
   move: PokemonMove;
@@ -14,7 +14,7 @@ export function PokemonMoveDisplayer({
   handleMovePrevious,
   move,
   loadingMoves
-}: State) {
+}: Props) {
   function displayMovement(move: PokemonMove) {
     return (
       <>

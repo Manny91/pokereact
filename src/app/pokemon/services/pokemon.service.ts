@@ -19,21 +19,24 @@ export interface PokemonSpeciesDetail {
   base_happiness: number;
   capture_rate: number;
   flavor_text_entries: FlavourText[];
-  evolution_chain: EvolutionChain;
+  evolution_chain: ChainLink;
+  evolutions: Pokemon[];
   id: number;
   name: string;
   url: string;
 }
 
-export interface EvolutionChain {
+export interface ChainLink {
   id: number;
-  chain: EvolutionChainDetail[];
+  chain: EvolutionChain[];
   url: string;
+  species: { name: string };
+  evolves_to: ChainLink[];
 }
 
-export interface EvolutionChainDetail {
+export interface EvolutionChain {
   id: number;
-  chain: EvolutionChain;
+  chain: ChainLink;
 }
 export interface PokemonStat {
   base_stat: number;
@@ -78,8 +81,10 @@ export interface PokemonInfoDisplayer {
   pokemon: Pokemon;
 }
 
-async function getPokemon(pokemonNo: number): Promise<Pokemon> {
-  const res = await httpClient.get(`pokemon/${pokemonNo}/`);
+async function getPokemonByIdOrName(
+  pokemonIdOrName: number | string
+): Promise<Pokemon> {
+  const res = await httpClient.get(`pokemon/${pokemonIdOrName}/`);
   return res.json();
 }
 
@@ -93,7 +98,7 @@ async function getSpecie(pokemonNo: number): Promise<PokemonSpeciesDetail> {
 }
 async function getEvolutionChain(
   evolutionChainId: number
-): Promise<EvolutionChainDetail> {
+): Promise<EvolutionChain> {
   const res = await httpClient.get(`evolution-chain/${evolutionChainId}`);
   return res.json();
 }
@@ -103,7 +108,7 @@ async function getMove(moveId: number): Promise<PokemonMove> {
 }
 export default {
   getPokemons,
-  getPokemon,
+  getPokemonByIdOrName,
   getSpecie,
   getEvolutionChain,
   getMove

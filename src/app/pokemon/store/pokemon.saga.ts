@@ -1,4 +1,8 @@
-import { PokemonMove } from "./../services/pokemon.service";
+import {
+  PokemonMove,
+  EvolutionChain,
+  ChainLink
+} from "./../services/pokemon.service";
 import { PokemonSpeciesDetail } from "../services/pokemon.service";
 import {
   PERFORM_GET_POKEMON,
@@ -18,25 +22,13 @@ export default function* pokemonSagas() {
 }
 
 function* watchGetPokemons() {
-  //   yield takeLatest(PERFORM_GET_POKEMONS, requestPokemons);
   yield takeLatest(PERFORM_GET_POKEMON, requestDetailsPokemon);
   yield takeLatest(PERFORM_GET_POKEMON_MOVE, requestPokemonMove);
 }
 
-// function* requestPokemons() {
-//   const pokemons = yield call(pokemonService.getPokemons);
-//   yield put(performGetPokemonsSuccessAction(pokemons));
-//   yield all(
-//     pokemons.results.map((pokemon: Pokemon) => {
-//       const pokemonId = getPokemonIdFromUrl(pokemon);
-//       return call(getPokemonDetails, pokemonId);
-//     })
-//   );
-// }
-
 function* requestDetailsPokemon(action: GetPokemonAction) {
   const pokemon: Pokemon = yield call(
-    pokemonService.getPokemon,
+    pokemonService.getPokemonByIdOrName,
     action.payload
   );
   const specieDetail: PokemonSpeciesDetail = yield call(
@@ -47,11 +39,9 @@ function* requestDetailsPokemon(action: GetPokemonAction) {
   const evolutionChainId = +evolutionChainUrlArray[
     evolutionChainUrlArray.length - 2
   ];
-  const evolutionChain = yield call(
-    pokemonService.getEvolutionChain,
-    evolutionChainId
-  );
-  specieDetail.evolution_chain = evolutionChain;
+
+  const evolutionChain = yield getEvolutionChain(evolutionChainId);
+  specieDetail.evolutions = evolutionChain;
   pokemon.species = specieDetail;
   pokemon.moves = pokemon.moves.map(flatMoves);
   pokemon.description = getFlavorEngText(specieDetail);
@@ -62,13 +52,46 @@ function* requestPokemonMove(action: GetPokemonMoveAction) {
   const move = yield call(pokemonService.getMove, action.payload);
   yield put(performGetPokemonMoveSuccessAction(move));
 }
-// function* getPokemonDetails(pokemonId: number) {
-//   yield put(performGetPokemonAction(pokemonId));
-// }
 
-// function getPokemonIdFromUrl(pokemon: Pokemon) {
-//   return pokemon.url.split("pokemon/")[1].replace("/", "");
-// }
+function* getEvolutionChain(evolutionChainId: number) {
+  const evolutionChain: EvolutionChain = yield call(
+    pokemonService.getEvolutionChain,
+    evolutionChainId
+  );
+  const chainNames = getNamesOfChain(evolutionChain);
+  const pokemonEvolutions = yield all(
+    chainNames.map(chainName => {
+      return getPokemonByName(chainName);
+    })
+  );
+  return pokemonEvolutions;
+}
+
+function* getPokemonByName(pokemonName: string) {
+  const pokemon: Pokemon = yield call(
+    pokemonService.getPokemonByIdOrName,
+    pokemonName
+  );
+  return pokemon;
+}
+
+function getNamesOfChain(evolutionChain: EvolutionChain): string[] {
+  const chain1 = evolutionChain.chain;
+  const chain2 = chain1.evolves_to[0];
+  const chain3 = chain2.evolves_to[0];
+  const chainNamesString = `${getChainSpeciesName(
+    chain1
+  )},${getChainSpeciesName(chain2)}${
+    chain3 ? "," + getChainSpeciesName(chain3) : ""
+  }`;
+  return chainNamesString.split(",");
+}
+
+function getChainSpeciesName(evolutionChain: ChainLink): string {
+  return (
+    evolutionChain && evolutionChain.species && evolutionChain.species.name
+  );
+}
 
 function getPokemonMoveIdFromUrl(url: string): number {
   return +url.split("move/")[1].replace("/", "");
